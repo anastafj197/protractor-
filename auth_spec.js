@@ -1,10 +1,15 @@
-// End to End test nodeAuth login program 
+// Frank Anastasia 
+// End to End / unit tests nodeAuth login program 
+
+// Non angular app requires ignore statement 
 browser.ignoreSynchronization = true;
 
-var username = "Snooper";
-var password = 777;
+var username = "Snoopers";
+var password = 7773;
 
-describe("Testing nodeAuth site", function() {
+var r = "random";
+
+describe("Testing nodeAuth local site", function() {
 	
 	// Travel to the host adress (localhost:3000)
 	// must have server running to access page 
@@ -34,6 +39,18 @@ describe("Testing nodeAuth site", function() {
 	});
 
 	it("Should logout of user", function() {
+		// grab any href link ending in logout
+		element(by.css('a[href$="logout"]')).click()
+	});
 
+	it("Shouldn't be able login with an invalid user", function() {
+		// Enter random username / password submit -> expect fail
+		element(by.css('[name="username"]')).sendKeys(r);
+		element(by.css('[name="password"]')).sendKeys(r);
+		element(by.css('[type="submit"]')).click()
+
+		// expects the correct text in error message 
+		error = element(by.css('[class="error"]')).getText();
+		expect(error).toBe("Invalid username / password");
 	});
 });
